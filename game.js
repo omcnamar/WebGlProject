@@ -14,7 +14,6 @@ var difficulty = 0.5;
 
 function setup()
 {
-	// Test Comment
 	// set the scene size
 	var WIDTH = 640,
 	  HEIGHT = 360;
@@ -86,20 +85,26 @@ function setup()
 	var sphereMaterial =
 	  new THREE.MeshLambertMaterial(
 		{
-		  color: 0xFF5000
+		  color: 0x00FF00
 		});
-		
+	var PaddleMaterial =
+	  new THREE.MeshLambertMaterial(
+		{
+		  color: 0x0000FF
+		});
+	var ballMaterial =
+	  new THREE.MeshLambertMaterial(
+		{
+		  color: 0xFF0002
+		});	
 	// // create a new mesh with
 	// // sphere geometry - we will cover
 	// // the sphereMaterial next!
 	ball = new THREE.Mesh(
+			//change ball to sphere
+	  new THREE.CylinderGeometry(7,7,1,20),
 
-	  new THREE.SphereGeometry(
-		radius,
-		segments,
-		rings),
-
-	  sphereMaterial);
+	  ballMaterial);
 
 	// // add the sphere to the scene
 	scene.add(ball);
@@ -108,6 +113,7 @@ function setup()
 	ball.position.z = radius/2;
 	ball.receiveShadow = true;
     ball.castShadow = true;
+	ball.rotation.x+=55;
 	
 	// // set up the paddle vars
 	paddleWidth = 10;
@@ -117,7 +123,7 @@ function setup()
 		
 	paddle1 = new THREE.Mesh(
 
-	  new THREE.SphereGeometry(
+	  new THREE.CubeGeometry(
 		paddleWidth,
 		paddleHeight,
 		paddleDepth,
@@ -125,16 +131,16 @@ function setup()
 		paddleQuality,
 		paddleQuality),
 
-	  sphereMaterial);
+	  PaddleMaterial);
 
 	// // add the sphere to the scene
 	scene.add(paddle1);
-	paddle1.receiveShadow = true;
-    paddle1.castShadow = true;
+	paddle1.receiveShadow = false;
+    paddle1.castShadow = false;
 	
 	paddle2 = new THREE.Mesh(
 
-	  new THREE.SphereGeometry(
+	  new THREE.CubeGeometry(
 		paddleWidth,
 		paddleHeight,
 		paddleDepth,
@@ -142,12 +148,12 @@ function setup()
 		paddleQuality,
 		paddleQuality),
 
-	  sphereMaterial);
+	  PaddleMaterial);
 	  
 	// // add the sphere to the scene
 	scene.add(paddle2);
-	paddle2.receiveShadow = true;
-    paddle2.castShadow = true;	
+	paddle2.receiveShadow = false;
+    paddle2.castShadow = false;	
 	
 	paddle1.position.x = -fieldWidth/2 + paddleWidth;
 	paddle2.position.x = fieldWidth/2 - paddleWidth;
