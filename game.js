@@ -14,6 +14,7 @@ var difficulty = 0.5;
 
 function setup()
 {
+	// Test Comment
 	// set the scene size
 	var WIDTH = 640,
 	  HEIGHT = 360;
