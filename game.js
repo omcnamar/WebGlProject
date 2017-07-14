@@ -15,11 +15,11 @@ var difficulty = 0.5;
 function setup()
 {
 	// set the scene size
-	var WIDTH = 640,
-	  HEIGHT = 360;
+	var WIDTH = 760,
+	  HEIGHT = 420;
 
 	// // set some camera attributes
-	var VIEW_ANGLE = 45,
+	var VIEW_ANGLE = 55,
 	  ASPECT = WIDTH / HEIGHT,
 	  NEAR = 0.1,
 	  FAR = 10000;
@@ -253,6 +253,21 @@ function ballPhysics()
 	ball.position.x += ballDirX * ballSpeed;
 	ball.position.y += ballDirY * ballSpeed;
 	
+	/*
+	console.log(ballDirY);
+	
+	if (ballDirY > 1.2)
+	{
+		var tempZ = 0;
+		for(tempZ; tempZ <= 10; tempZ=tempZ+.0001)
+		{
+			ball.position.z = tempZ;
+		}
+		for(tempZ; tempZ >= 5/2; tempZ=tempZ-.0001)
+			ball.position.z = tempZ;
+		
+	}
+	*/
 	if (ballDirY > ballSpeed * 2)
 	{
 		ballDirY = ballSpeed * 2;
@@ -328,12 +343,12 @@ function cameraPhysics()
 {
 	// spotLight.position.x = ball.position.x;
 	// spotLight.position.y = ball.position.y;
-	camera.lookAt(new THREE.Vector3(paddle1.position.x - ball.position.x * 0.1, paddle1.position.y - ball.position.y * 0.1, ball.position.z));
+	//camera.lookAt(new THREE.Vector3(paddle1.position.x - ball.position.x * 0.1, paddle1.position.y - ball.position.y * 0.1, ball.position.z));
 	
 	// move to behind the player's paddle
 	camera.position.x = paddle1.position.x - 100;
 	camera.position.y = paddle1.position.y;
-	camera.position.z = paddle1.position.z + 100 + 0.04 * (-ball.position.x + paddle1.position.x);
+	camera.position.z = paddle1.position.z + 100;
 	
 	// rotate to face towards the opponent
 	camera.rotation.y = -60 * Math.PI/180;
