@@ -8,6 +8,9 @@ var Key = {
   W: 87,
   D: 68,
   S: 83,
+  
+  // space is not used in the game yet
+  // might implement some kind of power shot
   SPACE: 32,
   
   isDown: function(keyCode) {

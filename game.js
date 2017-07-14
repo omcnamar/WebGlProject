@@ -15,8 +15,8 @@ var difficulty = 0.5;
 function setup()
 {
 	// set the scene size
-	var WIDTH = 760,
-	  HEIGHT = 420;
+	var WIDTH = 1080,
+	  HEIGHT = 720;
 
 	// // set some camera attributes
 	var VIEW_ANGLE = 55,
@@ -26,8 +26,8 @@ function setup()
 
 	var c = document.getElementById("gameCanvas");
 
-	// // create a WebGL renderer, camera
-	// // and a scene
+	// create a WebGL renderer, camera
+	// and a scene
 	renderer = new THREE.WebGLRenderer();
 	camera =
 	  new THREE.PerspectiveCamera(
@@ -38,25 +38,25 @@ function setup()
 
 	scene = new THREE.Scene();
 
-	// // add the camera to the scene
+	// add the camera to the scene
 	scene.add(camera);
 
-	// // the camera starts at 0,0,0
-	// // so pull it back
+	// the camera starts at 0,0,0
+	// so pull it back
 	camera.position.z = 320;
 	
-	// // start the renderer
+	// start the renderer
 	renderer.setSize(WIDTH, HEIGHT);
 
-	// // attach the render-supplied DOM element
+	// attach the render-supplied DOM element
 	c.appendChild(renderer.domElement);
 
-	// // set up the plane vars
+	// set up the plane vars
 	var planeWidth = fieldWidth,
 		planeHeight = fieldHeight,
 		planeQuality = 10;
 		
-	// // create the sphere's material
+	// create the sphere's material
 	var planeMaterial =
 	  new THREE.MeshLambertMaterial(
 		{
@@ -76,12 +76,12 @@ function setup()
 	scene.add(plane);
 	plane.receiveShadow = true;	
 		
-	// // set up the sphere vars
+	// set up the sphere vars
 	var radius = 5,
 		segments = 26,
 		rings = 26;
 		
-	// // create the sphere's material
+	// create the sphere's material
 	var sphereMaterial =
 	  new THREE.MeshLambertMaterial(
 		{
@@ -97,16 +97,16 @@ function setup()
 		{
 		  color: 0xFF0002
 		});	
-	// // create a new mesh with
-	// // sphere geometry - we will cover
-	// // the sphereMaterial next!
+	// create a new mesh with
+	// sphere geometry - we will cover
+	// the sphereMaterial next!
 	ball = new THREE.Mesh(
 			//change ball to sphere
 	  new THREE.CylinderGeometry(7,7,1,20),
 
 	  ballMaterial);
 
-	// // add the sphere to the scene
+	// add the sphere to the scene
 	scene.add(ball);
 	ball.position.x = 0;
 	ball.position.y = 0;
@@ -115,7 +115,7 @@ function setup()
     ball.castShadow = true;
 	ball.rotation.x+=55;
 	
-	// // set up the paddle vars
+	// set up the paddle vars
 	paddleWidth = 10;
 	paddleHeight = 30;
 	paddleDepth = 10;
@@ -133,7 +133,7 @@ function setup()
 
 	  PaddleMaterial);
 
-	// // add the sphere to the scene
+	// add the sphere to the scene
 	scene.add(paddle1);
 	paddle1.receiveShadow = false;
     paddle1.castShadow = false;
@@ -150,7 +150,7 @@ function setup()
 
 	  PaddleMaterial);
 	  
-	// // add the sphere to the scene
+	// add the sphere to the scene
 	scene.add(paddle2);
 	paddle2.receiveShadow = false;
     paddle2.castShadow = false;	
@@ -161,7 +161,7 @@ function setup()
 	paddle1.position.z = paddleDepth;
 	paddle2.position.z = paddleDepth;
 	
-	// // create a point light
+	// create a point light
 	pointLight =
 	  new THREE.PointLight(0xFFFFFF);
 
@@ -227,6 +227,11 @@ function ballPhysics()
 	{	
 		score2++;
 		document.getElementById("scores").innerHTML = score1 + "-" + score2;
+		if(score2 == 7){
+			alert("You lost, try to be better buddy");
+			location.reload();
+			// break;
+		}
 		resetBall(2);
 	}
 	
@@ -235,6 +240,11 @@ function ballPhysics()
 	{	
 		score1++;
 		document.getElementById("scores").innerHTML = score1 + "-" + score2;
+		if(score1 == 7){
+			alert("You win kid! You are going to the State Champion Game");
+			location.reload();
+			// break;
+		}
 		resetBall(1);
 	}
 	
@@ -268,6 +278,7 @@ function ballPhysics()
 		
 	}
 	*/
+	
 	if (ballDirY > ballSpeed * 2)
 	{
 		ballDirY = ballSpeed * 2;
@@ -329,6 +340,11 @@ function playerPaddleMovement()
 			paddle1.scale.z += (10 - paddle1.scale.z) * 0.2;
 		}
 	}
+	
+	// add space button for a "power hit"
+	//else if(Key.isDown(Key.SPACE))
+		
+	
 	// else don't move paddle
 	else
 	{
@@ -346,7 +362,7 @@ function cameraPhysics()
 	//camera.lookAt(new THREE.Vector3(paddle1.position.x - ball.position.x * 0.1, paddle1.position.y - ball.position.y * 0.1, ball.position.z));
 	
 	// move to behind the player's paddle
-	camera.position.x = paddle1.position.x - 100;
+	camera.position.x = paddle1.position.x - 125;
 	camera.position.y = paddle1.position.y;
 	camera.position.z = paddle1.position.z + 100;
 	
@@ -408,11 +424,11 @@ function resetBall(loser)
 	ball.position.y = 0;
 	if (loser == 1)
 	{
-		ballDirX = -1;
+		ballDirX = 1;
 	}
 	else
 	{
-		ballDirX = 1;
+		ballDirX = -1;
 	}
 	ballDirY = 1;
 }

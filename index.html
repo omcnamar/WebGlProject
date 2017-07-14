@@ -1,12 +1,12 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Game</title>
+		<title>Air Hockey Project</title>
 		<style>
 			#gameCanvas {
 				background-color: black;
-				width: 720px;
-				height: 400px;
+				width: 1080px;
+				height: 720px;
 				margin: auto;
 				align: center;
 			}
@@ -16,14 +16,13 @@
 		</style>
 	</head>
 	<body onload='setup();'>
-		<div id='gameCanvas'></div>
 		<script src='three.min.js'></script>
 		<script src='keyboard.js'></script>
 		<script src='game.js'></script>
 		<div id='scoreboard'>
 			<h1 id='scores' style='font-size:600%; padding:0; margin:0'>0-0</h1>
-			<h1>Air Hockey Project</h1>
 			<h2>First to 7 wins!</h2>
+			<div id='gameCanvas'></div>
 		</div>
 	</body>
 </html>
