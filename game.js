@@ -60,7 +60,7 @@ function setup()
 	var planeMaterial =
 	  new THREE.MeshLambertMaterial(
 		{
-		  color: 0x420000
+		  color: 0x808080
 		});
 		
 	var plane = new THREE.Mesh(
@@ -82,16 +82,18 @@ function setup()
 		rings = 26;
 		
 	// create the sphere's material
-	var sphereMaterial =
+	var backgroundMaterial =
 	  new THREE.MeshLambertMaterial(
 		{
-		  color: 0x00FF00
+		  color: 0xF0EAD6
 		});
+	// // create the paddle material	
 	var PaddleMaterial =
 	  new THREE.MeshLambertMaterial(
 		{
 		  color: 0x0000FF
 		});
+	// // create the ballmaterial	
 	var ballMaterial =
 	  new THREE.MeshLambertMaterial(
 		{
@@ -187,13 +189,13 @@ function setup()
 		var backdrop = new THREE.Mesh(
 
 		  new THREE.TorusKnotGeometry( 
-		  3200, 
+		  32, 
 		  925, 
 		  32, 
 		  62, 
 		  32 ),
 
-		  sphereMaterial);
+		  backgroundMaterial);
 		backdrop.rotation.z = i * (360 / 10) * Math.PI/180;
 		scene.add(backdrop);	
 	}
