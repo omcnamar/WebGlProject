@@ -7,16 +7,18 @@ var ball, paddle1, paddle2;
 var ballDirX = 1, ballDirY = 1, ballSpeed = 2;
 var paddle1DirY = 0, paddle2DirY = 0, paddleSpeed = 3;
 
+var tempCount = 7;
+
 var score1 = 0, score2 = 0;
 
 // set opponent reflexes (0 - easiest, 1 - hardest)
-var difficulty = 0.5;
+var difficulty = .5;
 
 function setup()
 {
 	// set the scene size
 	var WIDTH = 1080,
-	  HEIGHT = 720;
+	  HEIGHT = 520;
 
 	// // set some camera attributes
 	var VIEW_ANGLE = 55,
@@ -265,21 +267,28 @@ function ballPhysics()
 	ball.position.x += ballDirX * ballSpeed;
 	ball.position.y += ballDirY * ballSpeed;
 	
-	/*
-	console.log(ballDirY);
 	
-	if (ballDirY > 1.2)
+	//console.log(ballDirY);
+	
+	if (ballDirY > 1.2 || ballDirY < -1.2)
 	{
-		var tempZ = 0;
-		for(tempZ; tempZ <= 10; tempZ=tempZ+.0001)
+		tempCount = tempCount - .5;
+		if(tempCount > 0)
+			ball.position.z += .5;
+		if(tempCount < 0)
 		{
-			ball.position.z = tempZ;
+			ball.position.z = ball.position.z - .5;
+			if(ball.position.z < 5/2)
+			{
+				tempCount = 7;
+				// add 
+				if(ballDirY > 0)
+					ballDirY = Math.random() * (1.5 - 1) + 1;
+				else
+					ballDirY = Math.random() * (-1 - (-1.5)) + (-1.5);
+			}
 		}
-		for(tempZ; tempZ >= 5/2; tempZ=tempZ-.0001)
-			ball.position.z = tempZ;
-		
 	}
-	*/
 	
 	if (ballDirY > ballSpeed * 2)
 	{
