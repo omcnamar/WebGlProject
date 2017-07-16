@@ -59,10 +59,13 @@ function setup()
 		planeQuality = 10;
 		
 	// create the sphere's material
+	// The image does not work in Chrome
+	var texture = THREE.ImageUtils.loadTexture( 'table.PNG' );
 	var planeMaterial =
 	  new THREE.MeshLambertMaterial(
 		{
-		  color: 0x808080
+		  color: 0x808080,
+		  map: texture
 		});
 		
 	var plane = new THREE.Mesh(
@@ -281,7 +284,6 @@ function ballPhysics()
 			if(ball.position.z < 5/2)
 			{
 				tempCount = 7;
-				// add 
 				if(ballDirY > 0)
 					ballDirY = Math.random() * (1.5 - 1) + 1;
 				else
