@@ -1,0 +1,11 @@
+Things left to do:
+- 3D Transformations
+- Change Striker shape (To look like an airhockey striker)
+- Change Background (make it look nicer)
+- Finish up walls on sides and goals
+- Make goals smaller (resemble air hockey)
+
+Extras:
+- Add sounds when scoring and when win/lose happens
+- Add movement to the stikers (forward and backwords)
+- 
