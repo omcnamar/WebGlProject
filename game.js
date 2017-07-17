@@ -3,22 +3,21 @@ var renderer, scene, camera, pointLight, spotLight;
 var fieldWidth = 400, fieldHeight = 200;
 var paddleWidth, paddleHeight, paddleDepth, paddleQuality;
 
-var ball, paddle1, paddle2;
+var ball, paddle1, paddle2, wall1, wall2;
 var ballDirX = 1, ballDirY = 1, ballSpeed = 2;
 var paddle1DirY = 0, paddle2DirY = 0, paddleSpeed = 3;
-
-var tempCount = 7;
+var paddle1DirX = 0;
 
 var score1 = 0, score2 = 0;
 
 // set opponent reflexes (0 - easiest, 1 - hardest)
-var difficulty = .5;
+var difficulty = 0.5;
 
 function setup()
 {
 	// set the scene size
 	var WIDTH = 1080,
-	  HEIGHT = 520;
+	  HEIGHT = 720;
 
 	// // set some camera attributes
 	var VIEW_ANGLE = 55,
@@ -59,13 +58,10 @@ function setup()
 		planeQuality = 10;
 		
 	// create the sphere's material
-	// The image does not work in Chrome
-	var texture = THREE.ImageUtils.loadTexture( 'table.PNG' );
 	var planeMaterial =
 	  new THREE.MeshLambertMaterial(
 		{
-		  color: 0x808080,
-		  map: texture
+		  color: 0x420000
 		});
 		
 	var plane = new THREE.Mesh(
@@ -87,18 +83,16 @@ function setup()
 		rings = 26;
 		
 	// create the sphere's material
-	var backgroundMaterial =
+	var sphereMaterial =
 	  new THREE.MeshLambertMaterial(
 		{
-		  color: 0xF0EAD6
+		  color: 0x00FF00
 		});
-	// // create the paddle material	
 	var PaddleMaterial =
 	  new THREE.MeshLambertMaterial(
 		{
 		  color: 0x0000FF
 		});
-	// // create the ballmaterial	
 	var ballMaterial =
 	  new THREE.MeshLambertMaterial(
 		{
@@ -167,7 +161,45 @@ function setup()
 	
 	paddle1.position.z = paddleDepth;
 	paddle2.position.z = paddleDepth;
-	
+
+	wall1 = new THREE.Mesh(
+
+		new THREE.CubeGeometry( 
+		fieldWidth,
+		10,
+		20,
+		paddleQuality,
+		paddleQuality,
+		paddleQuality),
+
+		PaddleMaterial);
+
+		scene.add(wall1);
+
+//		wall1.position.z = fieldWidth;
+		wall1.position.y = plane.position.y-105;
+		wall1.position.x = plane.position.x;
+		wall1.position.z = plane.position.z; 
+
+		wall2 = new THREE.Mesh(
+
+		new THREE.CubeGeometry( 
+		fieldWidth,
+		10,
+		20,
+		paddleQuality,
+		paddleQuality,
+		paddleQuality),
+
+		PaddleMaterial);
+
+		scene.add(wall2);
+
+//		wall1.position.z = fieldWidth;
+		wall2.position.y = plane.position.y+105;
+		wall2.position.x = plane.position.x;
+		wall2.position.z = plane.position.z; 
+//		wall1.position.y = fieldWidth;
 	// create a point light
 	pointLight =
 	  new THREE.PointLight(0xFFFFFF);
@@ -194,13 +226,13 @@ function setup()
 		var backdrop = new THREE.Mesh(
 
 		  new THREE.TorusKnotGeometry( 
-		  32, 
+		  3200, 
 		  925, 
 		  32, 
 		  62, 
 		  32 ),
 
-		  backgroundMaterial);
+		  sphereMaterial);
 		backdrop.rotation.z = i * (360 / 10) * Math.PI/180;
 		scene.add(backdrop);	
 	}
@@ -230,8 +262,9 @@ function draw()
 function ballPhysics()
 {
 	// if ball goes off the left side
-	if (ball.position.x <= -fieldWidth/2)
+	if (ball.position.x <= -fieldWidth/2 && ball.position.y <= plane.position.y+100 && ball.position.y >= plane.position.y-100)
 	{	
+		
 		score2++;
 		document.getElementById("scores").innerHTML = score1 + "-" + score2;
 		if(score2 == 7){
@@ -270,27 +303,39 @@ function ballPhysics()
 	ball.position.x += ballDirX * ballSpeed;
 	ball.position.y += ballDirY * ballSpeed;
 	
+	/*
+	console.log(ballDirY);
 	
+<<<<<<< HEAD
 	//console.log(ballDirY);
 	
-	if (ballDirY > 1.2 || ballDirY < -1.2)
+	if (ballDirY > 2.2 || ballDirY < -2.2)
+=======
+	if (ballDirY > 1.2)
+>>>>>>> ee829f9e43bbbaa07bd9e1bf6b8b62837b7e2db8
 	{
-		tempCount = tempCount - .5;
-		if(tempCount > 0)
-			ball.position.z += .5;
-		if(tempCount < 0)
+		var tempZ = 0;
+		for(tempZ; tempZ <= 10; tempZ=tempZ+.0001)
 		{
+<<<<<<< HEAD
 			ball.position.z = ball.position.z - .5;
 			if(ball.position.z < 5/2)
 			{
 				tempCount = 7;
 				if(ballDirY > 0)
-					ballDirY = Math.random() * (1.5 - 1) + 1;
+					ballDirY = Math.random() * (3.4 - 1.5) + 1.5;
 				else
-					ballDirY = Math.random() * (-1 - (-1.5)) + (-1.5);
+					ballDirY = Math.random() * (-1.5 - (-3.4)) + (-3.4);
 			}
+=======
+			ball.position.z = tempZ;
+>>>>>>> ee829f9e43bbbaa07bd9e1bf6b8b62837b7e2db8
 		}
+		for(tempZ; tempZ >= 5/2; tempZ=tempZ-.0001)
+			ball.position.z = tempZ;
+		
 	}
+	*/
 	
 	if (ballDirY > ballSpeed * 2)
 	{
@@ -314,13 +359,16 @@ function opponentPaddleMovement()
 	}
 	else
 	{
+		// if set at 1.8 it is unbeatable
+		// try to find a decent number to set it at,
+		// so it catches most unless it is hit real hard
 		if (paddle2DirY > paddleSpeed)
 		{
-			paddle2.position.y += paddleSpeed;
+			paddle2.position.y += paddleSpeed + 1.5;
 		}
 		else if (paddle2DirY < -paddleSpeed)
 		{
-			paddle2.position.y -= paddleSpeed;
+			paddle2.position.y -= paddleSpeed + 1.5;
 		}
 	}
 }
@@ -332,7 +380,7 @@ function playerPaddleMovement()
 	{
 		if (paddle1.position.y < fieldHeight * 0.45)
 		{
-			paddle1DirY = paddleSpeed * 0.5;
+			paddle1DirY = paddleSpeed * 0.7;
 		}
 		else
 		{
@@ -345,13 +393,28 @@ function playerPaddleMovement()
 	{
 		if (paddle1.position.y > -fieldHeight * 0.45)
 		{
-			paddle1DirY = -paddleSpeed * 0.5;
+			paddle1DirY = -paddleSpeed * 0.7;
 		}
 		else
 		{
 			paddle1DirY = 0;
 			paddle1.scale.z += (10 - paddle1.scale.z) * 0.2;
 		}
+	}
+	
+	// Under construction
+	// move forward
+	else if (Key.isDown(Key.W))
+	{
+		if(paddle1DirX.position.x < fieldWidth * 0.45)
+			paddle1DirX = paddleSpeed *.5;
+		/*
+		else
+		{
+			paddle1DirX = 0;
+			paddle1.scale.
+		}
+		*/
 	}
 	
 	// add space button for a "power hit"
