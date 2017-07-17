@@ -6,7 +6,10 @@ var paddleWidth, paddleHeight, paddleDepth, paddleQuality;
 var ball, paddle1, paddle2, wall1, wall2;
 var ballDirX = 1, ballDirY = 1, ballSpeed = 2;
 var paddle1DirY = 0, paddle2DirY = 0, paddleSpeed = 3;
+<<<<<<< HEAD
 var paddle1DirX = 0;
+=======
+>>>>>>> ee829f9e43bbbaa07bd9e1bf6b8b62837b7e2db8
 
 var score1 = 0, score2 = 0;
 
@@ -307,9 +310,13 @@ function ballPhysics()
 	console.log(ballDirY);
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 	//console.log(ballDirY);
 	
 	if (ballDirY > 2.2 || ballDirY < -2.2)
+=======
+	if (ballDirY > 1.2)
+>>>>>>> ee829f9e43bbbaa07bd9e1bf6b8b62837b7e2db8
 =======
 	if (ballDirY > 1.2)
 >>>>>>> ee829f9e43bbbaa07bd9e1bf6b8b62837b7e2db8
@@ -317,6 +324,7 @@ function ballPhysics()
 		var tempZ = 0;
 		for(tempZ; tempZ <= 10; tempZ=tempZ+.0001)
 		{
+<<<<<<< HEAD
 <<<<<<< HEAD
 			ball.position.z = ball.position.z - .5;
 			if(ball.position.z < 5/2)
@@ -327,6 +335,9 @@ function ballPhysics()
 				else
 					ballDirY = Math.random() * (-1.5 - (-3.4)) + (-3.4);
 			}
+=======
+			ball.position.z = tempZ;
+>>>>>>> ee829f9e43bbbaa07bd9e1bf6b8b62837b7e2db8
 =======
 			ball.position.z = tempZ;
 >>>>>>> ee829f9e43bbbaa07bd9e1bf6b8b62837b7e2db8
