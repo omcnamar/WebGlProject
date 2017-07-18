@@ -14,7 +14,7 @@ var tempCount = 7;
 
 var score1 = 0, score2 = 0;
 // set opponent reflexes (0 - easiest, 1 - hardest)
-var difficulty = .4;
+var difficulty = 0.4;
 
 function setup()
 {
@@ -192,7 +192,7 @@ function setup()
 	paddle2.position.x = fieldWidth/2 - paddleWidth;
 	
 	paddleTop1.position.x = -fieldWidth/2 + paddleWidth;
-	paddleTop2.position.x = fieldWidth/2 + paddleWidth;
+	paddleTop2.position.x = fieldWidth/2 - paddleWidth;
 	
 	paddle1.position.z = paddleDepth;
 	paddle2.position.z = paddleDepth;
@@ -328,8 +328,8 @@ function ballPhysics()
 	{
 		score1++;
 		document.getElementById("scores").innerHTML = score1 + "-" + score2;
-		if(score2 == 7){
-			alert("You lost, try to be better buddy");
+		if(score1 == 7){
+			alert("You did it, Your going to the State Championship Game");
 			location.reload();
 			// break;
 		}
@@ -419,15 +419,14 @@ function playerPaddleMovement()
 		if (paddle1.position.y < fieldHeight * 0.45)
 		{
 			paddle1DirY = paddleSpeed * 0.7;
-			paddleTop1.position.y = paddleSpeed * 0.7;
-			
+			paddleTop1DirY = paddleSpeed * -0.7;	
 		}
 		else
 		{
 			paddle1DirY = 0;
 			paddleTop1DirY = 0;
 		}
-		paddleTop1.position.y = paddleTop1.position.y - paddleTop1DirY;
+		paddleTop1.position.y -= paddleTop1DirY;
 	}	
 	// move right
 	else if (Key.isDown(Key.D))
@@ -478,10 +477,6 @@ function playerPaddleMovement()
 
 function cameraPhysics()
 {
-	// spotLight.position.x = ball.position.x;
-	// spotLight.position.y = ball.position.y;
-	//camera.lookAt(new THREE.Vector3(paddle1.position.x - ball.position.x * 0.1, paddle1.position.y - ball.position.y * 0.1, ball.position.z));
-	
 	// move to behind the player's paddle
 	camera.position.x = paddle1.position.x - 125;
 	camera.position.y = paddle1.position.y;
