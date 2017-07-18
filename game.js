@@ -122,50 +122,82 @@ function setup()
 	ball.rotation.x+=55;
 	
 	// set up the paddle vars
-	paddleWidth = 10;
-	paddleHeight = 30;
-	paddleDepth = 10;
-	paddleQuality = 10;
+	paddleWidth = 15;
+	paddleHeight = 15;
+	paddleDepth = 4;
+	paddleQuality = 160;
 		
 	paddle1 = new THREE.Mesh(
 
-	  new THREE.CubeGeometry(
+	  new THREE.CylinderGeometry(
 		paddleWidth,
 		paddleHeight,
 		paddleDepth,
-		paddleQuality,
-		paddleQuality,
 		paddleQuality),
 
 	  PaddleMaterial);
 
 	// add the sphere to the scene
 	scene.add(paddle1);
+	paddle1.rotation.x+=55;
 	paddle1.receiveShadow = false;
     paddle1.castShadow = false;
-	
+	//paddle top
+	paddletopWidth = 5;
+	paddletopBase = 5;
+	paddletopHeight = 20;
+	paddletopDepth = 32;
+	paddletop1 = new THREE.Mesh(
+
+	  new THREE.CylinderGeometry(
+		paddletopBase,
+		paddletopWidth,
+		paddletopHeight,
+		paddletopDepth,
+		paddleQuality),
+	  PaddleMaterial);
+	  scene.add(paddletop1);
+	  paddletop1.rotation.x=55;
+	  
 	paddle2 = new THREE.Mesh(
 
-	  new THREE.CubeGeometry(
+	  new THREE.CylinderGeometry(
 		paddleWidth,
 		paddleHeight,
 		paddleDepth,
-		paddleQuality,
-		paddleQuality,
 		paddleQuality),
 
 	  PaddleMaterial);
 	  
 	// add the sphere to the scene
 	scene.add(paddle2);
+	paddle2.rotation.x+=55;
 	paddle2.receiveShadow = false;
     paddle2.castShadow = false;	
-	
+	// paddle top 2
+		paddletop2 = new THREE.Mesh(
+
+	  new THREE.CylinderGeometry(
+		paddletopBase,
+		paddletopWidth,
+		paddletopHeight,
+		paddletopDepth,
+		paddleQuality),
+	  PaddleMaterial);
+	  scene.add(paddletop2);
+	  paddletop2.rotation.x=55;
+	  
 	paddle1.position.x = -fieldWidth/2 + paddleWidth;
 	paddle2.position.x = fieldWidth/2 - paddleWidth;
 	
+	paddletop1.position.x = -fieldWidth/2 + paddleWidth;
+	paddletop2.position.x = fieldWidth/2 + paddleWidth;
+	
 	paddle1.position.z = paddleDepth;
 	paddle2.position.z = paddleDepth;
+	
+	paddletop1.position.z = paddleDepth +2;
+	paddletop2.position.z = paddleDepth +2;
 
 	wall1 = new THREE.Mesh(
 
