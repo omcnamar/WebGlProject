@@ -4,15 +4,17 @@ var fieldWidth = 400, fieldHeight = 200;
 var paddleWidth, paddleHeight, paddleDepth, paddleQuality;
 
 var ball, paddle1, paddle2, wall1, wall2;
+var paddleTop1, paddleTop2;
 var ballDirX = 1, ballDirY = 1, ballSpeed = 2;
 var paddle1DirY = 0, paddle2DirY = 0, paddleSpeed = 3;
+var paddleTop1DirY =0, paddleTop2DirY = 0;
 var paddle1DirX = 0;
 
 var tempCount = 7;
 
 var score1 = 0, score2 = 0;
 // set opponent reflexes (0 - easiest, 1 - hardest)
-var difficulty = .5;
+var difficulty = .4;
 
 function setup()
 {
@@ -61,6 +63,7 @@ function setup()
 	// create the sphere's material
 	// The image does not show in Chrome
 	var texture = THREE.ImageUtils.loadTexture('table.PNG');
+	
 	var planeMaterial =
 	  new THREE.MeshLambertMaterial(
 		{
@@ -122,125 +125,120 @@ function setup()
 	ball.rotation.x+=55;
 	
 	// set up the paddle vars
-	paddleWidth = 15;
-	paddleHeight = 15;
+	paddleWidth = 12;
+	paddleHeight = 12;
 	paddleDepth = 4;
 	paddleQuality = 160;
 		
 	paddle1 = new THREE.Mesh(
-
-	  new THREE.CylinderGeometry(
-		paddleWidth,
-		paddleHeight,
-		paddleDepth,
-		paddleQuality),
-
-	  PaddleMaterial);
+		new THREE.CylinderGeometry(
+			paddleWidth,
+			paddleHeight,
+			paddleDepth,
+			paddleQuality),
+		PaddleMaterial);
 
 	// add the sphere to the scene
 	scene.add(paddle1);
 	paddle1.rotation.x+=55;
-	paddle1.receiveShadow = false;
-    paddle1.castShadow = false;
+	paddle1.receiveShadow = true;
+    paddle1.castShadow = true;
+	
 	//paddle top
 	paddletopWidth = 5;
 	paddletopBase = 5;
-	paddletopHeight = 20;
+	paddletopHeight = 15;
 	paddletopDepth = 32;
-	paddletop1 = new THREE.Mesh(
-
-	  new THREE.CylinderGeometry(
-		paddletopBase,
-		paddletopWidth,
-		paddletopHeight,
-		paddletopDepth,
-		paddleQuality),
+	paddleTop1 = new THREE.Mesh(
+		new THREE.CylinderGeometry(
+			paddletopBase,
+			paddletopWidth,
+			paddletopHeight,
+			paddletopDepth,
+			paddleQuality),
 	  PaddleMaterial);
-	  scene.add(paddletop1);
-	  paddletop1.rotation.x=55;
+	  
+	  scene.add(paddleTop1);
+	  paddleTop1.rotation.x=55;
 	  
 	paddle2 = new THREE.Mesh(
-
-	  new THREE.CylinderGeometry(
-		paddleWidth,
-		paddleHeight,
-		paddleDepth,
-		paddleQuality),
+		new THREE.CylinderGeometry(
+			paddleWidth,
+			paddleHeight,
+			paddleDepth,
+			paddleQuality),
 
 	  PaddleMaterial);
 	  
 	// add the sphere to the scene
 	scene.add(paddle2);
 	paddle2.rotation.x+=55;
-	paddle2.receiveShadow = false;
-    paddle2.castShadow = false;	
+	paddle2.receiveShadow = true;
+    paddle2.castShadow = true;	
 	// paddle top 2
-		paddletop2 = new THREE.Mesh(
-
-	  new THREE.CylinderGeometry(
-		paddletopBase,
-		paddletopWidth,
-		paddletopHeight,
-		paddletopDepth,
-		paddleQuality),
+	paddleTop2 = new THREE.Mesh(
+		new THREE.CylinderGeometry(
+			paddletopBase,
+			paddletopWidth,
+			paddletopHeight,
+			paddletopDepth,
+			paddleQuality),
 	  PaddleMaterial);
-	  scene.add(paddletop2);
-	  paddletop2.rotation.x=55;
+	  
+	scene.add(paddleTop2);
+	paddleTop2.rotation.x=55;
 	  
 	paddle1.position.x = -fieldWidth/2 + paddleWidth;
 	paddle2.position.x = fieldWidth/2 - paddleWidth;
 	
-	paddletop1.position.x = -fieldWidth/2 + paddleWidth;
-	paddletop2.position.x = fieldWidth/2 + paddleWidth;
+	paddleTop1.position.x = -fieldWidth/2 + paddleWidth;
+	paddleTop2.position.x = fieldWidth/2 + paddleWidth;
 	
 	paddle1.position.z = paddleDepth;
 	paddle2.position.z = paddleDepth;
 	
-	paddletop1.position.z = paddleDepth +2;
-	paddletop2.position.z = paddleDepth +2;
+	paddleTop1.position.z = paddleDepth +2;
+	paddleTop2.position.z = paddleDepth +2;
 
 	wall1 = new THREE.Mesh(
-
 		new THREE.CubeGeometry( 
-		fieldWidth,
-		10,
-		20,
-		paddleQuality,
-		paddleQuality,
-		paddleQuality),
+			fieldWidth,
+			10,
+			20,	
+			paddleQuality,
+			paddleQuality,
+			paddleQuality),
 
 		PaddleMaterial);
 
-		scene.add(wall1);
+	scene.add(wall1);
 
-//		wall1.position.z = fieldWidth;
-		wall1.position.y = plane.position.y-105;
-		wall1.position.x = plane.position.x;
-		wall1.position.z = plane.position.z; 
+//	wall1.position.z = fieldWidth;
+	wall1.position.y = plane.position.y-105;
+	wall1.position.x = plane.position.x;
+	wall1.position.z = plane.position.z; 
 
-		wall2 = new THREE.Mesh(
-
+	wall2 = new THREE.Mesh(
 		new THREE.CubeGeometry( 
-		fieldWidth,
-		10,
-		20,
-		paddleQuality,
-		paddleQuality,
-		paddleQuality),
+			fieldWidth,
+			10,
+			20,
+			paddleQuality,
+			paddleQuality,
+			paddleQuality),
 
 		PaddleMaterial);
 
-		scene.add(wall2);
+	scene.add(wall2);
 
-//		wall1.position.z = fieldWidth;
-		wall2.position.y = plane.position.y+105;
-		wall2.position.x = plane.position.x;
-		wall2.position.z = plane.position.z; 
-//		wall1.position.y = fieldWidth;
+//	wall1.position.z = fieldWidth;
+	wall2.position.y = plane.position.y+105;
+	wall2.position.x = plane.position.x;
+	wall2.position.z = plane.position.z; 
+//	wall1.position.y = fieldWidth;
 
 	// create a point light
-	pointLight =
-	  new THREE.PointLight(0xFFFFFF);
+	pointLight = new THREE.PointLight(0xFFFFFF);
 
 	// set its position
 	pointLight.position.x = -1000;
@@ -262,15 +260,15 @@ function setup()
 	for (var i = 0; i < 10; i++)
 	{
 		var backdrop = new THREE.Mesh(
-
-		  new THREE.TorusKnotGeometry( 
-		  32, 
-		  925, 
-		  32, 
-		  62, 
-		  32 ),
-
-		  backgroundMaterial);
+			new THREE.TorusKnotGeometry( 
+				32, 
+				925, 
+				32, 
+				62, 
+				32 ),
+				
+			backgroundMaterial);
+			
 		backdrop.rotation.z = i * (360 / 10) * Math.PI/180;
 		scene.add(backdrop);	
 	}
@@ -301,13 +299,13 @@ function ballPhysics()
 {
 	
 	// if puck hits off the wall near the player
-	if(ball.position.x <= -fieldWidth/2 && (ball.position.y <=  100 && ball.position.y >= 40 || 
-			ball.position.y <= -40 && ball.position.y >= -100))
+	if(ball.position.x <= -fieldWidth/2 && (ball.position.y <=  100 && ball.position.y >= 30 || 
+			ball.position.y <= -30 && ball.position.y >= -100))
 	{	
 		ballDirX = -ballDirX;
 	}
 	// if puck goes through the goal post near the player 
-	else if(ball.position.x <= -fieldWidth/2 && ball.position.y < 40 && ball.position.y > -40)
+	else if(ball.position.x <= -fieldWidth/2 && ball.position.y < 30 && ball.position.y > -30)
 	{
 		score2++;
 		document.getElementById("scores").innerHTML = score1 + "-" + score2;
@@ -320,13 +318,13 @@ function ballPhysics()
 	}
 	
 	// if puck hits off the wall near the CPU
-	if(ball.position.x >=  fieldWidth/2 && (ball.position.y <=  100 && ball.position.y >= 40 || 
-			ball.position.y <= -40 && ball.position.y >= -100))
+	if(ball.position.x >=  fieldWidth/2 && (ball.position.y <=  100 && ball.position.y >= 30 || 
+			ball.position.y <= -30 && ball.position.y >= -100))
 	{	
 		ballDirX = -ballDirX;
 	}
 	// if puck goes through the goal post near the CPU 
-	else if(ball.position.x >= fieldWidth/2 && ball.position.y < 40 && ball.position.y > -40)
+	else if(ball.position.x >= fieldWidth/2 && ball.position.y < 30 && ball.position.y > -30)
 	{
 		score1++;
 		document.getElementById("scores").innerHTML = score1 + "-" + score2;
@@ -387,11 +385,13 @@ function opponentPaddleMovement()
 {
 	// Lerp towards the ball on the y plane
 	paddle2DirY = (ball.position.y - paddle2.position.y) * difficulty;
+	paddleTop2DirY = (ball.position.y - paddleTop2.position.y) * difficulty;
 	
 	// in case the Lerp function produces a value above max paddle speed, we clamp it
 	if (Math.abs(paddle2DirY) <= paddleSpeed)
 	{	
 		paddle2.position.y += paddle2DirY;
+		paddleTop2.position.y += paddleTop2DirY;
 	}
 	else
 	{
@@ -400,11 +400,13 @@ function opponentPaddleMovement()
 		// so it catches most unless it is hit real hard
 		if (paddle2DirY > paddleSpeed)
 		{
-			paddle2.position.y += paddleSpeed + 1.5;
+			paddle2.position.y += paddleSpeed + difficulty;
+			paddleTop2.position.y += paddleSpeed + difficulty;
 		}
 		else if (paddle2DirY < -paddleSpeed)
 		{
-			paddle2.position.y -= paddleSpeed + 1.5;
+			paddle2.position.y -= paddleSpeed + difficulty;
+			paddleTop2.position.y -= paddleSpeed + difficulty;
 		}
 	}
 }
@@ -417,12 +419,15 @@ function playerPaddleMovement()
 		if (paddle1.position.y < fieldHeight * 0.45)
 		{
 			paddle1DirY = paddleSpeed * 0.7;
+			paddleTop1.position.y = paddleSpeed * 0.7;
+			
 		}
 		else
 		{
 			paddle1DirY = 0;
-			paddle1.scale.z += (10 - paddle1.scale.z) * 0.2;
+			paddleTop1DirY = 0;
 		}
+		paddleTop1.position.y = paddleTop1.position.y - paddleTop1DirY;
 	}	
 	// move right
 	else if (Key.isDown(Key.D))
@@ -430,29 +435,31 @@ function playerPaddleMovement()
 		if (paddle1.position.y > -fieldHeight * 0.45)
 		{
 			paddle1DirY = -paddleSpeed * 0.7;
+			paddleTop1DirY = -paddleSpeed * 0.7;
 		}
 		else
 		{
 			paddle1DirY = 0;
-			paddle1.scale.z += (10 - paddle1.scale.z) * 0.2;
+			paddleTop1DirY = 0;
 		}
+		paddleTop1.position.y += paddleTop1DirY;
 	}
 	
 	// Under construction
 	// move forward
+	/*
 	else if (Key.isDown(Key.W))
 	{
 		if(paddle1DirX.position.x < fieldWidth * 0.45)
 			paddle1DirX = paddleSpeed *.5;
-		/*
 		else
 		{
 			paddle1DirX = 0;
 			paddle1.scale.
 		}
-		*/
+		
 	}
-	
+	*/
 	// add space button for a "power hit"
 	//else if(Key.isDown(Key.SPACE))
 		
@@ -461,8 +468,10 @@ function playerPaddleMovement()
 	else
 	{
 		paddle1DirY = 0;
+		paddleTop1DirY = 0;
 	}
-			paddle1.scale.z += (1 - paddle1.scale.z) * 0.2;
+	
+	paddle1.scale.z += (1 - paddle1.scale.z) * 0.2;
 	
 	paddle1.position.y += paddle1DirY;
 }
@@ -489,11 +498,11 @@ function paddlePhysics()
 	
 	// if ball is aligned with paddle1 on x plane
 	if (ball.position.x <= paddle1.position.x + paddleWidth
-	&&  ball.position.x >= paddle1.position.x)
+		&&  ball.position.x >= paddle1.position.x)
 	{
 		// and if ball is aligned with paddle1 on y plane
 		if (ball.position.y <= paddle1.position.y + paddleHeight/2
-		&&  ball.position.y >= paddle1.position.y - paddleHeight/2)
+			&&  ball.position.y >= paddle1.position.y - paddleHeight/2)
 		{
 			// and if ball is travelling towards player (-ve direction)
 			if (ballDirX < 0)
@@ -511,11 +520,11 @@ function paddlePhysics()
 	
 	// if ball is aligned with paddle2 on x plane
 	if (ball.position.x <= paddle2.position.x + paddleWidth
-	&&  ball.position.x >= paddle2.position.x)
+		&&  ball.position.x >= paddle2.position.x)
 	{
 		// and if ball is aligned with paddle2 on y plane
 		if (ball.position.y <= paddle2.position.y + paddleHeight/2
-		&&  ball.position.y >= paddle2.position.y - paddleHeight/2)
+			&&  ball.position.y >= paddle2.position.y - paddleHeight/2)
 		{
 			// and if ball is travelling towards opponent (+ve direction)
 			if (ballDirX > 0)
