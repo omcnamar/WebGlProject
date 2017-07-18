@@ -3,7 +3,7 @@ Things left to do:
 - Change Striker shape (To look like an airhockey striker)
 - Change Background (make it look nicer)
 - Change the board (from white to actual board) --> DONE
-- Finish up walls on sides and goals
+- Finish up walls on sides and goals --> Walls on side are DONE, Still need goals
 - Make goals smaller (resemble air hockey)
 
 Extras:

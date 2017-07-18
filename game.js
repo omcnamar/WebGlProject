@@ -6,15 +6,13 @@ var paddleWidth, paddleHeight, paddleDepth, paddleQuality;
 var ball, paddle1, paddle2, wall1, wall2;
 var ballDirX = 1, ballDirY = 1, ballSpeed = 2;
 var paddle1DirY = 0, paddle2DirY = 0, paddleSpeed = 3;
-<<<<<<< HEAD
 var paddle1DirX = 0;
-=======
->>>>>>> ee829f9e43bbbaa07bd9e1bf6b8b62837b7e2db8
+
+var tempCount = 7;
 
 var score1 = 0, score2 = 0;
-
 // set opponent reflexes (0 - easiest, 1 - hardest)
-var difficulty = 0.5;
+var difficulty = .5;
 
 function setup()
 {
@@ -61,10 +59,13 @@ function setup()
 		planeQuality = 10;
 		
 	// create the sphere's material
+	// The image does not show in Chrome
+	var texture = THREE.ImageUtils.loadTexture('table.PNG');
 	var planeMaterial =
 	  new THREE.MeshLambertMaterial(
 		{
-		  color: 0x420000
+		  color: 0x808080,
+		  map: texture
 		});
 		
 	var plane = new THREE.Mesh(
@@ -86,11 +87,12 @@ function setup()
 		rings = 26;
 		
 	// create the sphere's material
-	var sphereMaterial =
+	var backgroundMaterial =
 	  new THREE.MeshLambertMaterial(
 		{
-		  color: 0x00FF00
+		  color: 0xF0EAD6
 		});
+	// Create the paddle material
 	var PaddleMaterial =
 	  new THREE.MeshLambertMaterial(
 		{
@@ -203,6 +205,7 @@ function setup()
 		wall2.position.x = plane.position.x;
 		wall2.position.z = plane.position.z; 
 //		wall1.position.y = fieldWidth;
+
 	// create a point light
 	pointLight =
 	  new THREE.PointLight(0xFFFFFF);
@@ -229,13 +232,13 @@ function setup()
 		var backdrop = new THREE.Mesh(
 
 		  new THREE.TorusKnotGeometry( 
-		  3200, 
+		  32, 
 		  925, 
 		  32, 
 		  62, 
 		  32 ),
 
-		  sphereMaterial);
+		  backgroundMaterial);
 		backdrop.rotation.z = i * (360 / 10) * Math.PI/180;
 		scene.add(backdrop);	
 	}
@@ -264,10 +267,16 @@ function draw()
 
 function ballPhysics()
 {
-	// if ball goes off the left side
-	if (ball.position.x <= -fieldWidth/2 && ball.position.y <= plane.position.y+100 && ball.position.y >= plane.position.y-100)
+	
+	// if puck hits off the wall near the player
+	if(ball.position.x <= -fieldWidth/2 && (ball.position.y <=  100 && ball.position.y >= 40 || 
+			ball.position.y <= -40 && ball.position.y >= -100))
 	{	
-		
+		ballDirX = -ballDirX;
+	}
+	// if puck goes through the goal post near the player 
+	else if(ball.position.x <= -fieldWidth/2 && ball.position.y < 40 && ball.position.y > -40)
+	{
 		score2++;
 		document.getElementById("scores").innerHTML = score1 + "-" + score2;
 		if(score2 == 7){
@@ -278,26 +287,32 @@ function ballPhysics()
 		resetBall(2);
 	}
 	
-	// if ball goes off the right side
-	if (ball.position.x >= fieldWidth/2)
+	// if puck hits off the wall near the CPU
+	if(ball.position.x >=  fieldWidth/2 && (ball.position.y <=  100 && ball.position.y >= 40 || 
+			ball.position.y <= -40 && ball.position.y >= -100))
 	{	
+		ballDirX = -ballDirX;
+	}
+	// if puck goes through the goal post near the CPU 
+	else if(ball.position.x >= fieldWidth/2 && ball.position.y < 40 && ball.position.y > -40)
+	{
 		score1++;
 		document.getElementById("scores").innerHTML = score1 + "-" + score2;
-		if(score1 == 7){
-			alert("You win kid! You are going to the State Champion Game");
+		if(score2 == 7){
+			alert("You lost, try to be better buddy");
 			location.reload();
 			// break;
 		}
-		resetBall(1);
+		resetBall(2);
 	}
 	
-	// if ball goes off the top side
+	// if ball hits right wall
 	if (ball.position.y <= -fieldHeight/2)
 	{
 		ballDirY = -ballDirY;
 	}
 	
-	// if ball goes off the bottom side
+	// if ball hits left wall
 	if (ball.position.y >= fieldHeight/2)
 	{
 		ballDirY = -ballDirY;
@@ -306,26 +321,14 @@ function ballPhysics()
 	ball.position.x += ballDirX * ballSpeed;
 	ball.position.y += ballDirY * ballSpeed;
 	
-	/*
-	console.log(ballDirY);
-	
-<<<<<<< HEAD
-<<<<<<< HEAD
-	//console.log(ballDirY);
 	
 	if (ballDirY > 2.2 || ballDirY < -2.2)
-=======
-	if (ballDirY > 1.2)
->>>>>>> ee829f9e43bbbaa07bd9e1bf6b8b62837b7e2db8
-=======
-	if (ballDirY > 1.2)
->>>>>>> ee829f9e43bbbaa07bd9e1bf6b8b62837b7e2db8
 	{
-		var tempZ = 0;
-		for(tempZ; tempZ <= 10; tempZ=tempZ+.0001)
+		tempCount = tempCount - .5
+		if(tempCount > 0)
+			ball.position.z += .5;
+		if(tempCount < 0)
 		{
-<<<<<<< HEAD
-<<<<<<< HEAD
 			ball.position.z = ball.position.z - .5;
 			if(ball.position.z < 5/2)
 			{
@@ -335,18 +338,8 @@ function ballPhysics()
 				else
 					ballDirY = Math.random() * (-1.5 - (-3.4)) + (-3.4);
 			}
-=======
-			ball.position.z = tempZ;
->>>>>>> ee829f9e43bbbaa07bd9e1bf6b8b62837b7e2db8
-=======
-			ball.position.z = tempZ;
->>>>>>> ee829f9e43bbbaa07bd9e1bf6b8b62837b7e2db8
 		}
-		for(tempZ; tempZ >= 5/2; tempZ=tempZ-.0001)
-			ball.position.z = tempZ;
-		
 	}
-	*/
 	
 	if (ballDirY > ballSpeed * 2)
 	{
