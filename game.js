@@ -3,9 +3,9 @@ var renderer, scene, camera, pointLight, spotLight;
 var fieldWidth = 400, fieldHeight = 200;
 var paddleWidth, paddleHeight, paddleDepth, paddleQuality;
 
-var ball, paddle1, paddle2, wall1, wall2;
+var puck, paddle1, paddle2, wall1, wall2;
 var paddleTop1, paddleTop2;
-var ballDirX = 1, ballDirY = 1, ballSpeed = 2;
+var puckDirX = 1, puckDirY = 1, puckSpeed = 2;
 var paddle1DirY = 0, paddle2DirY = 0, paddleSpeed = 3;
 var paddleTop1DirY =0, paddleTop2DirY = 0;
 var paddle1DirX = 0;
@@ -101,7 +101,7 @@ function setup()
 		{
 		  color: 0x0000FF
 		});
-	var ballMaterial =
+	var puckMaterial =
 	  new THREE.MeshLambertMaterial(
 		{
 		  color: 0xFF0002
@@ -109,20 +109,20 @@ function setup()
 	// create a new mesh with
 	// sphere geometry - we will cover
 	// the sphereMaterial next!
-	ball = new THREE.Mesh(
-			//change ball to sphere
+	puck = new THREE.Mesh(
+			//change puck to sphere
 	  new THREE.CylinderGeometry(7,7,1,20),
 
-	  ballMaterial);
+	  puckMaterial);
 
 	// add the sphere to the scene
-	scene.add(ball);
-	ball.position.x = 0;
-	ball.position.y = 0;
-	ball.position.z = radius/2;
-	ball.receiveShadow = true;
-    ball.castShadow = true;
-	ball.rotation.x+=55;
+	scene.add(puck);
+	puck.position.x = 0;
+	puck.position.y = 0;
+	puck.position.z = radius/2;
+	puck.receiveShadow = true;
+    puck.castShadow = true;
+	puck.rotation.x+=55;
 	
 	// set up the paddle vars
 	paddleWidth = 12;
@@ -287,7 +287,7 @@ function draw()
 	renderer.render(scene, camera);
 	requestAnimationFrame(draw);
 	
-	ballPhysics();
+	puckPhysics();
 	paddlePhysics();
 	playerPaddleMovement();
 	opponentPaddleMovement();
@@ -295,17 +295,17 @@ function draw()
 	cameraPhysics();
 }
 
-function ballPhysics()
+function puckPhysics()
 {
 	
 	// if puck hits off the wall near the player
-	if(ball.position.x <= -fieldWidth/2 && (ball.position.y <=  100 && ball.position.y >= 30 || 
-			ball.position.y <= -30 && ball.position.y >= -100))
+	if(puck.position.x <= -fieldWidth/2 && (puck.position.y <=  100 && puck.position.y >= 30 || 
+			puck.position.y <= -30 && puck.position.y >= -100))
 	{	
-		ballDirX = -ballDirX;
+		puckDirX = -puckDirX;
 	}
 	// if puck goes through the goal post near the player 
-	else if(ball.position.x <= -fieldWidth/2 && ball.position.y < 30 && ball.position.y > -30)
+	else if(puck.position.x <= -fieldWidth/2 && puck.position.y < 30 && puck.position.y > -30)
 	{
 		score2++;
 		document.getElementById("scores").innerHTML = score1 + "-" + score2;
@@ -314,17 +314,17 @@ function ballPhysics()
 			location.reload();
 			// break;
 		}
-		resetBall(2);
+		resetPuck(2);
 	}
 	
 	// if puck hits off the wall near the CPU
-	if(ball.position.x >=  fieldWidth/2 && (ball.position.y <=  100 && ball.position.y >= 30 || 
-			ball.position.y <= -30 && ball.position.y >= -100))
+	if(puck.position.x >=  fieldWidth/2 && (puck.position.y <=  100 && puck.position.y >= 30 || 
+			puck.position.y <= -30 && puck.position.y >= -100))
 	{	
-		ballDirX = -ballDirX;
+		puckDirX = -puckDirX;
 	}
 	// if puck goes through the goal post near the CPU 
-	else if(ball.position.x >= fieldWidth/2 && ball.position.y < 30 && ball.position.y > -30)
+	else if(puck.position.x >= fieldWidth/2 && puck.position.y < 30 && puck.position.y > -30)
 	{
 		score1++;
 		document.getElementById("scores").innerHTML = score1 + "-" + score2;
@@ -333,59 +333,59 @@ function ballPhysics()
 			location.reload();
 			// break;
 		}
-		resetBall(2);
+		resetPuck(2);
 	}
 	
-	// if ball hits right wall
-	if (ball.position.y <= -fieldHeight/2)
+	// if puck hits right wall
+	if (puck.position.y <= -fieldHeight/2)
 	{
-		ballDirY = -ballDirY;
+		puckDirY = -puckDirY;
 	}
 	
-	// if ball hits left wall
-	if (ball.position.y >= fieldHeight/2)
+	// if puck hits left wall
+	if (puck.position.y >= fieldHeight/2)
 	{
-		ballDirY = -ballDirY;
+		puckDirY = -puckDirY;
 	}
 	
-	ball.position.x += ballDirX * ballSpeed;
-	ball.position.y += ballDirY * ballSpeed;
+	puck.position.x += puckDirX * puckSpeed;
+	puck.position.y += puckDirY * puckSpeed;
 	
 	
-	if (ballDirY > 2.2 || ballDirY < -2.2)
+	if (puckDirY > 2.2 || puckDirY < -2.2)
 	{
 		tempCount = tempCount - .5
 		if(tempCount > 0)
-			ball.position.z += .5;
+			puck.position.z += .5;
 		if(tempCount < 0)
 		{
-			ball.position.z = ball.position.z - .5;
-			if(ball.position.z < 5/2)
+			puck.position.z = puck.position.z - .5;
+			if(puck.position.z < 5/2)
 			{
 				tempCount = 7;
-				if(ballDirY > 0)
-					ballDirY = Math.random() * (3.4 - 1.5) + 1.5;
+				if(puckDirY > 0)
+					puckDirY = Math.random() * (3.4 - 1.5) + 1.5;
 				else
-					ballDirY = Math.random() * (-1.5 - (-3.4)) + (-3.4);
+					puckDirY = Math.random() * (-1.5 - (-3.4)) + (-3.4);
 			}
 		}
 	}
 	
-	if (ballDirY > ballSpeed * 2)
+	if (puckDirY > puckSpeed * 2)
 	{
-		ballDirY = ballSpeed * 2;
+		puckDirY = puckSpeed * 2;
 	}
-	else if (ballDirY < -ballSpeed * 2)
+	else if (puckDirY < -puckSpeed * 2)
 	{
-		ballDirY = -ballSpeed * 2;
+		puckDirY = -puckSpeed * 2;
 	}
 }
 
 function opponentPaddleMovement()
 {
-	// Lerp towards the ball on the y plane
-	paddle2DirY = (ball.position.y - paddle2.position.y) * difficulty;
-	paddleTop2DirY = (ball.position.y - paddleTop2.position.y) * difficulty;
+	// Lerp towards the puck on the y plane
+	paddle2DirY = (puck.position.y - paddle2.position.y) * difficulty;
+	paddleTop2DirY = (puck.position.y - paddleTop2.position.y) * difficulty;
 	
 	// in case the Lerp function produces a value above max paddle speed, we clamp it
 	if (Math.abs(paddle2DirY) <= paddleSpeed)
@@ -491,21 +491,21 @@ function paddlePhysics()
 {
 	// PLAYER PADDLE LOGIC
 	
-	// if ball is aligned with paddle1 on x plane
-	if (ball.position.x <= paddle1.position.x + paddleWidth
-		&&  ball.position.x >= paddle1.position.x)
+	// if puck is aligned with paddle1 on x plane
+	if (puck.position.x <= paddle1.position.x + paddleWidth
+		&&  puck.position.x >= paddle1.position.x)
 	{
-		// and if ball is aligned with paddle1 on y plane
-		if (ball.position.y <= paddle1.position.y + paddleHeight/2
-			&&  ball.position.y >= paddle1.position.y - paddleHeight/2)
+		// and if puck is aligned with paddle1 on y plane
+		if (puck.position.y <= paddle1.position.y + paddleHeight/2
+			&&  puck.position.y >= paddle1.position.y - paddleHeight/2)
 		{
-			// and if ball is travelling towards player (-ve direction)
-			if (ballDirX < 0)
+			// and if puck is travelling towards player (-ve direction)
+			if (puckDirX < 0)
 			{
-				ballDirX = -ballDirX;
+				puckDirX = -puckDirX;
 				if (paddle1DirY > 0.5)
 				{
-					ballDirY -= paddle1DirY * 0.7;
+					puckDirY -= paddle1DirY * 0.7;
 				}
 			}
 		}
@@ -513,38 +513,38 @@ function paddlePhysics()
 	
 	// OPPONENT PADDLE LOGIC	
 	
-	// if ball is aligned with paddle2 on x plane
-	if (ball.position.x <= paddle2.position.x + paddleWidth
-		&&  ball.position.x >= paddle2.position.x)
+	// if puck is aligned with paddle2 on x plane
+	if (puck.position.x <= paddle2.position.x + paddleWidth
+		&&  puck.position.x >= paddle2.position.x)
 	{
-		// and if ball is aligned with paddle2 on y plane
-		if (ball.position.y <= paddle2.position.y + paddleHeight/2
-			&&  ball.position.y >= paddle2.position.y - paddleHeight/2)
+		// and if puck is aligned with paddle2 on y plane
+		if (puck.position.y <= paddle2.position.y + paddleHeight/2
+			&&  puck.position.y >= paddle2.position.y - paddleHeight/2)
 		{
-			// and if ball is travelling towards opponent (+ve direction)
-			if (ballDirX > 0)
+			// and if puck is travelling towards opponent (+ve direction)
+			if (puckDirX > 0)
 			{
-				ballDirX = -ballDirX;
+				puckDirX = -puckDirX;
 				if (paddle2DirY > 0.5)
 				{
-					ballDirY -= paddle2DirY * 0.7;
+					puckDirY -= paddle2DirY * 0.7;
 				}
 			}
 		}
 	}
 }
 
-function resetBall(loser)
+function resetPuck(loser)
 {
-	ball.position.x = 0;
-	ball.position.y = 0;
+	puck.position.x = 0;
+	puck.position.y = 0;
 	if (loser == 1)
 	{
-		ballDirX = 1;
+		puckDirX = 1;
 	}
 	else
 	{
-		ballDirX = -1;
+		puckDirX = -1;
 	}
-	ballDirY = 1;
+	puckDirY = 1;
 }
