@@ -1,12 +1,12 @@
 Things left to do:
 - 3D Transformations --> DONE
-- Change Striker shape (To look like an airhockey striker)
-- Change Background (make it look nicer)
+- Change Striker shape (To look like an airhockey striker) --> DONE
+- Change Background (make it look nicer) --> ran out of time
 - Change the board (from white to actual board) --> DONE
-- Finish up walls on sides and goals --> Walls on side are DONE, Still need goals
-- Make goals smaller (resemble air hockey)
+- Finish up walls on sides and goals --> Just need goal side walls
+- Make goals smaller (resemble air hockey) --> DONE
 
 Extras:
 - Add sounds when scoring and when win/lose happens
-- Add movement to the stikers (forward and backwords)
-- Make sure the AI works correctly with the speed
+- Add movement to the stikers (forward and backwords) --> Can't implement
+- Make sure the AI works correctly with the speed --> DONE

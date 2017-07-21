@@ -10,35 +10,33 @@ var paddle1DirY = 0, paddle2DirY = 0, paddleSpeed = 3;
 var paddleTop1DirY =0, paddleTop2DirY = 0;
 var paddle1DirX = 0;
 
+// this helps with the logic on how the puck deals with getting 
+// hit hard, will help it wobble
 var tempCount = 7;
 
 var score1 = 0, score2 = 0;
 // set opponent reflexes (0 - easiest, 1 - hardest)
-var difficulty = 0.4;
+var difficulty = 0.5;
 
 function setup()
 {
 	// set the scene size
-	var WIDTH = 1080,
-	  HEIGHT = 720;
+	var WIDTH = 1080, HEIGHT = 720;
 
 	// // set some camera attributes
-	var VIEW_ANGLE = 55,
-	  ASPECT = WIDTH / HEIGHT,
-	  NEAR = 0.1,
-	  FAR = 10000;
+	var VIEW_ANGLE = 55, ASPECT = WIDTH / HEIGHT,
+		NEAR = 0.1, FAR = 10000;
 
 	var c = document.getElementById("gameCanvas");
 
 	// create a WebGL renderer, camera
 	// and a scene
 	renderer = new THREE.WebGLRenderer();
-	camera =
-	  new THREE.PerspectiveCamera(
-		VIEW_ANGLE,
-		ASPECT,
-		NEAR,
-		FAR);
+	camera = new THREE.PerspectiveCamera(
+			VIEW_ANGLE,
+			ASPECT,
+			NEAR,
+			FAR);
 
 	scene = new THREE.Scene();
 
@@ -64,22 +62,18 @@ function setup()
 	// The image does not show in Chrome
 	var texture = THREE.ImageUtils.loadTexture('table.PNG');
 	
-	var planeMaterial =
-	  new THREE.MeshLambertMaterial(
-		{
-		  color: 0x808080,
-		  map: texture
+	var planeMaterial = new THREE.MeshLambertMaterial({
+			color: 0x808080,
+			map: texture
 		});
 		
 	var plane = new THREE.Mesh(
-
-	  new THREE.PlaneGeometry(
-		planeWidth,
-		planeHeight,
-		planeQuality,
-		planeQuality),
-
-	  planeMaterial);
+		new THREE.PlaneGeometry(
+			planeWidth,
+			planeHeight,
+			planeQuality,
+			planeQuality),
+		planeMaterial);
 	  
 	scene.add(plane);
 	plane.receiveShadow = true;	
@@ -90,30 +84,23 @@ function setup()
 		rings = 26;
 		
 	// create the sphere's material
-	var backgroundMaterial =
-	  new THREE.MeshLambertMaterial(
-		{
+	var backgroundMaterial =new THREE.MeshLambertMaterial({
 		  color: 0xF0EAD6
 		});
 	// Create the paddle material
-	var PaddleMaterial =
-	  new THREE.MeshLambertMaterial(
-		{
+	var PaddleMaterial = new THREE.MeshLambertMaterial({
 		  color: 0x0000FF
 		});
-	var puckMaterial =
-	  new THREE.MeshLambertMaterial(
-		{
+	var puckMaterial = new THREE.MeshLambertMaterial({
 		  color: 0xFF0002
 		});	
 	// create a new mesh with
 	// sphere geometry - we will cover
 	// the sphereMaterial next!
 	puck = new THREE.Mesh(
-			//change puck to sphere
-	  new THREE.CylinderGeometry(7,7,1,20),
-
-	  puckMaterial);
+	//change puck to sphere
+		new THREE.CylinderGeometry(7,7,1,20),
+		puckMaterial);
 
 	// add the sphere to the scene
 	scene.add(puck);
@@ -156,10 +143,10 @@ function setup()
 			paddletopHeight,
 			paddletopDepth,
 			paddleQuality),
-	  PaddleMaterial);
+		PaddleMaterial);
 	  
-	  scene.add(paddleTop1);
-	  paddleTop1.rotation.x=55;
+	scene.add(paddleTop1);
+	paddleTop1.rotation.x=55;
 	  
 	paddle2 = new THREE.Mesh(
 		new THREE.CylinderGeometry(
@@ -167,8 +154,7 @@ function setup()
 			paddleHeight,
 			paddleDepth,
 			paddleQuality),
-
-	  PaddleMaterial);
+		PaddleMaterial);
 	  
 	// add the sphere to the scene
 	scene.add(paddle2);
@@ -183,7 +169,7 @@ function setup()
 			paddletopHeight,
 			paddletopDepth,
 			paddleQuality),
-	  PaddleMaterial);
+		PaddleMaterial);
 	  
 	scene.add(paddleTop2);
 	paddleTop2.rotation.x=55;
@@ -208,7 +194,6 @@ function setup()
 			paddleQuality,
 			paddleQuality,
 			paddleQuality),
-
 		PaddleMaterial);
 
 	scene.add(wall1);
@@ -226,7 +211,6 @@ function setup()
 			paddleQuality,
 			paddleQuality,
 			paddleQuality),
-
 		PaddleMaterial);
 
 	scene.add(wall2);
@@ -265,10 +249,8 @@ function setup()
 				925, 
 				32, 
 				62, 
-				32 ),
-				
+				32 ),	
 			backgroundMaterial);
-			
 		backdrop.rotation.z = i * (360 / 10) * Math.PI/180;
 		scene.add(backdrop);	
 	}
@@ -298,12 +280,11 @@ function draw()
 function puckPhysics()
 {
 	
-	// if puck hits off the wall near the player
+	// if puck hits off the wall near the player's goals
 	if(puck.position.x <= -fieldWidth/2 && (puck.position.y <=  100 && puck.position.y >= 30 || 
 			puck.position.y <= -30 && puck.position.y >= -100))
-	{	
 		puckDirX = -puckDirX;
-	}
+		
 	// if puck goes through the goal post near the player 
 	else if(puck.position.x <= -fieldWidth/2 && puck.position.y < 30 && puck.position.y > -30)
 	{
@@ -314,15 +295,14 @@ function puckPhysics()
 			location.reload();
 			// break;
 		}
-		resetPuck(2);
+		resetPuck(1);
 	}
 	
 	// if puck hits off the wall near the CPU
 	if(puck.position.x >=  fieldWidth/2 && (puck.position.y <=  100 && puck.position.y >= 30 || 
 			puck.position.y <= -30 && puck.position.y >= -100))
-	{	
 		puckDirX = -puckDirX;
-	}
+		
 	// if puck goes through the goal post near the CPU 
 	else if(puck.position.x >= fieldWidth/2 && puck.position.y < 30 && puck.position.y > -30)
 	{
@@ -338,15 +318,11 @@ function puckPhysics()
 	
 	// if puck hits right wall
 	if (puck.position.y <= -fieldHeight/2)
-	{
 		puckDirY = -puckDirY;
-	}
 	
 	// if puck hits left wall
 	if (puck.position.y >= fieldHeight/2)
-	{
 		puckDirY = -puckDirY;
-	}
 	
 	puck.position.x += puckDirX * puckSpeed;
 	puck.position.y += puckDirY * puckSpeed;
@@ -354,6 +330,7 @@ function puckPhysics()
 	
 	if (puckDirY > 2.2 || puckDirY < -2.2)
 	{
+		puck.rotation.x += .35;
 		tempCount = tempCount - .5
 		if(tempCount > 0)
 			puck.position.z += .5;
@@ -364,21 +341,21 @@ function puckPhysics()
 			{
 				tempCount = 7;
 				if(puckDirY > 0)
-					puckDirY = Math.random() * (3.4 - 1.5) + 1.5;
+					puckDirY = Math.random() * (2.6 - 1.5) + 1.5;
 				else
-					puckDirY = Math.random() * (-1.5 - (-3.4)) + (-3.4);
+					puckDirY = Math.random() * (-1.5 - (-2.6)) + (-2.6);
 			}
 		}
 	}
+	// if the puck is sent "flying" this statement will level it 
+	// back out again once it is done
+	else
+		puck.rotation.x = 55;
 	
 	if (puckDirY > puckSpeed * 2)
-	{
 		puckDirY = puckSpeed * 2;
-	}
 	else if (puckDirY < -puckSpeed * 2)
-	{
 		puckDirY = -puckSpeed * 2;
-	}
 }
 
 function opponentPaddleMovement()
@@ -395,9 +372,6 @@ function opponentPaddleMovement()
 	}
 	else
 	{
-		// if set at 1.8 it is unbeatable
-		// try to find a decent number to set it at,
-		// so it catches most unless it is hit real hard
 		if (paddle2DirY > paddleSpeed)
 		{
 			paddle2.position.y += paddleSpeed + difficulty;
@@ -450,12 +424,9 @@ function playerPaddleMovement()
 	else if (Key.isDown(Key.W))
 	{
 		if(paddle1DirX.position.x < fieldWidth * 0.45)
-			paddle1DirX = paddleSpeed *.5;
+			paddle1DirX = paddleSpeed *.7;
 		else
-		{
 			paddle1DirX = 0;
-			paddle1.scale.
-		}
 		
 	}
 	*/
@@ -490,7 +461,6 @@ function cameraPhysics()
 function paddlePhysics()
 {
 	// PLAYER PADDLE LOGIC
-	
 	// if puck is aligned with paddle1 on x plane
 	if (puck.position.x <= paddle1.position.x + paddleWidth
 		&&  puck.position.x >= paddle1.position.x)
@@ -512,7 +482,6 @@ function paddlePhysics()
 	}
 	
 	// OPPONENT PADDLE LOGIC	
-	
 	// if puck is aligned with paddle2 on x plane
 	if (puck.position.x <= paddle2.position.x + paddleWidth
 		&&  puck.position.x >= paddle2.position.x)
@@ -526,9 +495,7 @@ function paddlePhysics()
 			{
 				puckDirX = -puckDirX;
 				if (paddle2DirY > 0.5)
-				{
 					puckDirY -= paddle2DirY * 0.7;
-				}
 			}
 		}
 	}
@@ -539,12 +506,13 @@ function resetPuck(loser)
 	puck.position.x = 0;
 	puck.position.y = 0;
 	if (loser == 1)
-	{
-		puckDirX = 1;
-	}
-	else
-	{
 		puckDirX = -1;
-	}
-	puckDirY = 1;
+	else
+		puckDirX = 1;
+	
+	// Will make the direction of the puck random when it is "served"
+	if((Math.random() * (1 - 0) + 0) > .5)
+		puckDirY = 1;
+	else
+		puckDirY = -1;
 }
