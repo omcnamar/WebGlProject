@@ -3,7 +3,7 @@ var renderer, scene, camera, pointLight, spotLight;
 var fieldWidth = 400, fieldHeight = 200;
 var paddleWidth, paddleHeight, paddleDepth, paddleQuality;
 
-var puck, paddle1, paddle2, wall1, wall2;
+var puck, paddle1, paddle2, wall1, wall2, wall3, wall4, wall5, wall6;
 var paddleTop1, paddleTop2;
 var puckDirX = 1, puckDirY = 1, puckSpeed = 2;
 var paddle1DirY = 0, paddle2DirY = 0, paddleSpeed = 3;
@@ -221,7 +221,79 @@ function setup()
 	wall2.position.z = plane.position.z; 
 //	wall1.position.y = fieldWidth;
 
+	wall3 = new THREE.Mesh(
+		new THREE.CubeGeometry( 
+			70,
+			10,
+			20,	
+			paddleQuality,
+			paddleQuality,
+			paddleQuality),
+		PaddleMaterial);
+
+	scene.add(wall3);
+
+//	wall1.position.z = fieldWidth;
+	wall3.position.y = plane.position.y-65;
+	wall3.position.x = plane.position.x-200;
+	wall3.position.z = plane.position.z;
+	wall3.rotation.z += 55; 
 	// create a point light
+
+	wall4 = new THREE.Mesh(
+		new THREE.CubeGeometry( 
+			70,
+			10,
+			20,	
+			paddleQuality,
+			paddleQuality,
+			paddleQuality),
+		PaddleMaterial);
+
+	scene.add(wall4);
+
+//	wall1.position.z = fieldWidth;
+	wall4.position.y = plane.position.y+65;
+	wall4.position.x = plane.position.x-200;
+	wall4.position.z = plane.position.z;
+	wall4.rotation.z += 55; 
+
+	wall5 = new THREE.Mesh(
+		new THREE.CubeGeometry( 
+			70,
+			10,
+			20,	
+			paddleQuality,
+			paddleQuality,
+			paddleQuality),
+		PaddleMaterial);
+
+	scene.add(wall5);
+
+//	wall1.position.z = fieldWidth;
+	wall5.position.y = plane.position.y+65;
+	wall5.position.x = plane.position.x+200;
+	wall5.position.z = plane.position.z;
+	wall5.rotation.z += 55; 
+
+	wall6 = new THREE.Mesh(
+		new THREE.CubeGeometry( 
+			70,
+			10,
+			20,	
+			paddleQuality,
+			paddleQuality,
+			paddleQuality),
+		PaddleMaterial);
+
+	scene.add(wall6);
+
+//	wall1.position.z = fieldWidth;
+	wall6.position.y = plane.position.y-65;
+	wall6.position.x = plane.position.x+200;
+	wall6.position.z = plane.position.z;
+	wall6.rotation.z += 55; 
+
 	pointLight = new THREE.PointLight(0xFFFFFF);
 
 	// set its position
