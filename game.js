@@ -327,7 +327,8 @@ function puckPhysics()
 	puck.position.x += puckDirX * puckSpeed;
 	puck.position.y += puckDirY * puckSpeed;
 	
-	
+	// if puck is hit to create a fast enough speed it will
+	// make it wobble (rotation and and bouncing)
 	if (puckDirY > 2.2 || puckDirY < -2.2)
 	{
 		puck.rotation.x += .35;
@@ -347,6 +348,7 @@ function puckPhysics()
 			}
 		}
 	}
+	
 	// if the puck is sent "flying" this statement will level it 
 	// back out again once it is done
 	else

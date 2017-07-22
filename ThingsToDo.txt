@@ -7,6 +7,6 @@ Things left to do:
 - Make goals smaller (resemble air hockey) --> DONE
 
 Extras:
-- Add sounds when scoring and when win/lose happens
+- Add sounds when scoring and when win/lose happens --> 
 - Add movement to the stikers (forward and backwords) --> Can't implement
 - Make sure the AI works correctly with the speed --> DONE
