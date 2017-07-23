@@ -17,7 +17,7 @@ var tempCount = 7;
 var score1 = 0, score2 = 0;
 // set opponent reflexes (0 - easiest, 1 - hardest)
 var difficulty = 0.5;
-
+var audio = new Audio('air.mp3');
 function setup()
 {
 	// set the scene size
@@ -347,6 +347,7 @@ function draw()
 	opponentPaddleMovement();
 	
 	cameraPhysics();
+	audio.play();
 }
 
 function puckPhysics()
