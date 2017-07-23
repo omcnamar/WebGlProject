@@ -517,7 +517,6 @@ function playerPaddleMovement()
 	}
 	
 	paddle1.scale.z += (1 - paddle1.scale.z) * 0.2;
-	
 	paddle1.position.y += paddle1DirY;
 }
 
@@ -549,9 +548,7 @@ function paddlePhysics()
 			{
 				puckDirX = -puckDirX;
 				if (paddle1DirY > 0.5)
-				{
 					puckDirY -= paddle1DirY * 0.7;
-				}
 			}
 		}
 	}
@@ -570,7 +567,7 @@ function paddlePhysics()
 			{
 				puckDirX = -puckDirX;
 				if (paddle2DirY > 0.5)
-					puckDirY -= paddle2DirY * 0.7;
+					puckDirY += paddle2DirY * 0.7;
 			}
 		}
 	}
